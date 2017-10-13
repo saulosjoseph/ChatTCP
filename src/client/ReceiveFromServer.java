@@ -1,9 +1,8 @@
 package client;
-
 import java.io.InputStream;
 import java.util.Scanner;
 
-public class ReceiveFromServer implements Runnable {
+public class ReceiveFromServer implements Runnable{
 
 	private InputStream server;
 

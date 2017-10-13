@@ -16,24 +16,24 @@ public class Server {
 		this.port = porta;
 		this.clients = new ArrayList<>();
 	}
-	
-	public void run() throws IOException {
-		try(ServerSocket server = new ServerSocket(this.port)){
+	//create server, accept client and start thread to receive data
+	public void create() throws IOException {
+		try(ServerSocket server = new ServerSocket(this.port)){ 
 			System.out.println("Waiting...");			
 			while(true) {
 				Socket client = server.accept();
 				clients.add(client);
 				System.out.println(client.getInetAddress().getHostAddress() + " Conected.");
-				ReceiveFromClients receive = new ReceiveFromClients(client, this);
+				ManagerMsg receive = new ManagerMsg(client, this);
 				new Thread(receive).start();
 			}			
 		}
 	}
-	
+	//receive data from client and send to all other clients
 	public void sendToClients(Socket client, String msg) throws IOException {
-		for(Socket c : clients) {
-			if(!c.equals(client)){
-				PrintStream ps = new PrintStream(c.getOutputStream());
+		for(Socket i : clients) { //
+			if(!i.equals(client)){
+				PrintStream ps = new PrintStream(i.getOutputStream());
 				ps.println(msg);
 			}
 		}

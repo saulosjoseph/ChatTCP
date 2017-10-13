@@ -15,22 +15,22 @@ public class Client {
 		this.host = host;
 	}
 
-	public void run() throws IOException {
-		Socket client = new Socket(host, port);
-		Scanner input = new Scanner(System.in);
-		PrintStream output = new PrintStream(client.getOutputStream());
+	public void connect() throws IOException {
+		Socket client = new Socket(host, port); //create a server connection
 		System.out.println("Conected");
+		Scanner input = new Scanner(System.in);
+		PrintStream send = new PrintStream(client.getOutputStream()); //add functions to socket
 
 		ReceiveFromServer receive = new ReceiveFromServer(client.getInputStream());
-		new Thread(receive).start();
+		new Thread(receive).start();		
 
 		while (input.hasNextLine()) {
-			output.println(input.nextLine());
+			send.println(input.nextLine());//send to server
 		}
-
-		output.close();
+		
 		input.close();
 		client.close();
+
 	}
 
 }
