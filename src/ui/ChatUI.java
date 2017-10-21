@@ -32,6 +32,7 @@ public class ChatUI {
 	JTextField  usernameChooser;
 	JFrame      preFrame;
 	Client	client;
+	ChatUI ui = this;
 
 	public static void main(String[] args) {
 		SwingUtilities.invokeLater(new Runnable() {
@@ -67,9 +68,10 @@ public class ChatUI {
 		preFrame.getContentPane().add(BorderLayout.SOUTH, enterServer);
 		preFrame.setSize(300, 300);
 		preFrame.setVisible(true);
+		client = new Client(2020, this.ui);
 
 	}
-
+	
 	public void display() {
 		JPanel mainPanel = new JPanel();
 		mainPanel.setLayout(new BorderLayout());
@@ -115,6 +117,10 @@ public class ChatUI {
 		newFrame.setVisible(true);
 		
 	}
+	
+	public void printChat(String msg) {
+		chatBox.append(msg + "\n");
+	}
 
 	class sendMessageButtonListener implements ActionListener {
 		public void actionPerformed(ActionEvent event) {
@@ -143,7 +149,6 @@ public class ChatUI {
 			} else {
 				preFrame.setVisible(false);
 				display();
-				client = new Client(2020);
 				client.connect();
 			}
 		}

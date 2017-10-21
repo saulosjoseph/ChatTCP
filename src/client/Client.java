@@ -5,6 +5,8 @@ import java.io.PrintStream;
 import java.net.Socket;
 import java.net.UnknownHostException;
 
+import ui.ChatUI;
+
 
 public class Client {
 
@@ -12,9 +14,11 @@ public class Client {
 	private Client client;
 	private Socket socket;
 	private PrintStream output;
+	private ChatUI ui;
 
-	public Client(int port) {
+	public Client(int port, ChatUI ui) {
 		this.port = port;
+		this.ui = ui;
 	}
 
 	public void connect(){
@@ -27,7 +31,7 @@ public class Client {
 			output = new PrintStream(socket.getOutputStream());
 
 			//recebe do servidor e printa
-			ReceiveFromServer receive = new ReceiveFromServer(this.socket);
+			ReceiveFromServer receive = new ReceiveFromServer(this.socket, ui);
 			new Thread(receive).start();
 
 		} catch (UnknownHostException e) {
@@ -40,7 +44,7 @@ public class Client {
 	}
 
 	public static void main(String[] args) throws IOException {
-		new Client(2020).connect();//connect with server
+		//new Client(2020, ui).connect();//connect with server
 	}
 
 	public void send(String msg) {
